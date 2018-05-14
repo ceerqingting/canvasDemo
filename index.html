@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="./polyfill.js"></script> -->
+  <style>
+    .div1 {
+      /* width: 535px;
+      height: 340px; */
+      background: pink;
+      float: left;
+    }
+    .div2 {
+      background:pink;
+      float: left;
+    }
+    div {
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="div1">
+      <canvas id="wrap1" width="535" height="340"></canvas>
+  </div>
+  <div class="div2">
+      <canvas id="wrap2" width="320" height="166"></canvas>
+  </div>
+  <script>
+
+    var arr1=[{name:'19岁以下',value:0},
+            {name:'19-25岁',value:20},
+            {name:'26-35岁',value:40},
+            {name:'36-45岁',value:60},
+            {name:'46-55岁',value:80},
+            {name:'55岁以上',value:100}
+		   ]
+    var imgList1 = [
+    'img/1.png',
+    'img/2.png',
+    'img/3.png',
+    'img/4.png',
+    'img/5.png',
+    'img/6.png'
+  ]
+   var yAxisList1 = ['0', '20%', '40%',  '60%', '80%', '100%'];
+
+
+   var arr2 = [{
+     name: '25岁以下',
+     value: 0
+   },
+   {
+     name: '25岁-55岁',
+     value: 25
+   },
+   {
+     name: '55岁以上',
+     value: 50
+   }]
+   var imgList2 = [
+    'img/1.png',
+    'img/5.png',
+    'img/4.png'
+  ]
+   var yAxisList2 = ['0%', '25%', '50%', '75%', '100%'];
+   var options1 = {
+     id: 'wrap1',
+     data: arr1,
+     yAxisList: yAxisList1,
+     imgList: imgList1,
+     bottom: 70,
+     left: 50
+   }
+   var options2 = {
+     id: 'wrap2',
+     data: arr2,
+     yAxisList: yAxisList2,
+     imgList: imgList2,
+     bottom: 30,
+     left: 35
+   }
+   draw(options1)
+   draw(options2)
+  
+   function draw(opt) {
+    var wrap = document.getElementById(opt.id);
+    var ctx = wrap.getContext('2d');
+    var width = wrap.getBoundingClientRect().width;
+    var height = wrap.getBoundingClientRect().height;
+    ctx.clearRect(0, 0, width, height)
+    ctx.lineWidth= 1;
+    ctx.font="12px microsoft yahei";
+
+    var dataLen = opt.data.length;
+    var yAxisLen = opt.yAxisList.length;
+    var barWidth = parseInt(width * 0.4/dataLen);
+    var barGap = parseInt(barWidth * 0.9);
+    console.log(barWidth)
+    var lineGap = parseInt(height * 0.6/yAxisLen);
+    var lineWidth = (barWidth + barGap) * dataLen - barGap + width * 0.04;
+    var dline=wrap.height-opt.bottom;
+    var yImgH = parseInt(height * 0.16);
+    var yDline = dline - yImgH;
+    var h=lineGap*(yAxisLen - 1);
+    var part=h/100;
+
+    opt.data.forEach((obj,i) =>{
+      var x= opt.left + 40 + barWidth * i + barGap*i;
+      var y= yDline - obj.value*part;
+        ctx.fillStyle="#4D5AC9";
+        ctx.fillRect(x, y, barWidth, obj.value*part + yImgH);
+        var img=new Image();
+          img.src=opt.imgList[i];
+          img.onload=function(){
+            ctx.drawImage(img, x + barWidth * 0.2, parseInt(dline - yImgH*0.8) , parseInt(barWidth * 0.6), parseInt(yImgH*0.6));
+          }
+        ctx.fillStyle="#fff";
+        ctx.fillText(obj.name,x, dline + 20);
+      });
+      opt.yAxisList.forEach((obj, i) => {
+        ctx.fillStyle="#fff";
+        var y =  yDline- lineGap*i;
+        var x = opt.left + 32;
+        ctx.fillText(opt.yAxisList[i], opt.left ,y);
+        ctx.setLineDash([5,5]);
+        ctx.lineWidth = 2 ;
+        ctx.strokeStyle = '#fff'; 
+        ctx.moveTo(x, y)
+        ctx.lineTo(x + lineWidth , y);
+        ctx.stroke()
+      })
+   }
+  </script>
+</body>
+</html>
