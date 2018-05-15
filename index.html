@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <!-- <script src="./polyfill.js"></script> -->
+  <script src="./polyfill.js"></script>
   <style>
     .div1 {
       /* width: 535px;
       height: 340px; */
-      background: pink;
+      /* background: pink; */
       float: left;
     }
     .div2 {
-      background:pink;
+      /* background:pink; */
       float: left;
     }
     div {
+      background: blue;
       border: 1px solid #ddd;
     }
   </style>
@@ -72,16 +73,16 @@
      data: arr1,
      yAxisList: yAxisList1,
      imgList: imgList1,
-     bottom: 70,
-     left: 50
+     bottom: 400,
+     left: 60
    }
    var options2 = {
      id: 'wrap2',
      data: arr2,
      yAxisList: yAxisList2,
      imgList: imgList2,
-     bottom: 30,
-     left: 35
+     bottom: 200,
+     left: 40
    }
    draw(options1)
    draw(options2)
@@ -112,6 +113,7 @@
       var x= opt.left + 40 + barWidth * i + barGap*i;
       var y= yDline - obj.value*part;
         ctx.fillStyle="#4D5AC9";
+        console.log(x, y, barWidth, obj.value*part + yImgH)
         ctx.fillRect(x, y, barWidth, obj.value*part + yImgH);
         var img=new Image();
           img.src=opt.imgList[i];
@@ -125,7 +127,7 @@
         ctx.fillStyle="#fff";
         var y =  yDline- lineGap*i;
         var x = opt.left + 32;
-        ctx.fillText(opt.yAxisList[i], opt.left ,y);
+        ctx.fillText(opt.yAxisList[i], opt.left ,y + 5);
         ctx.setLineDash([5,5]);
         ctx.lineWidth = 2 ;
         ctx.strokeStyle = '#fff'; 
@@ -133,6 +135,7 @@
         ctx.lineTo(x + lineWidth , y);
         ctx.stroke()
       })
+      
    }
   </script>
 </body>
